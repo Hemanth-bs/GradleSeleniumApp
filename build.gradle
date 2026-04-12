@@ -1,0 +1,19 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.google.guava:guava:23.0'
+    implementation 'org.seleniumhq.selenium:selenium-java:4.11.0'
+    
+    testImplementation 'junit:junit:4.13.2'
+}
+
+application {
+    mainClass = 'App'
+}

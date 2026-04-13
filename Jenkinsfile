@@ -1,33 +1,42 @@
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven'
+    }
+
     stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Hemanth-bs/MyMavenGuavaApp.git'
+            }
+        }
 
         stage('Build') {
             steps {
-                sh './gradlew clean build'
+                sh 'mvn clean package'
             }
         }
 
-        stage('Test (Selenium)') {
+        stage('Test') {
             steps {
-                sh './gradlew test'
+                sh 'mvn test'
             }
         }
 
-        stage('Report') {
+        stage('Run Application') {
             steps {
-                junit '**/build/test-results/test/*.xml'
+                sh 'mvn exec:java -Dexec.mainClass="com.example.App"'
             }
         }
     }
 
     post {
         success {
-            echo 'Build & Selenium tests passed!'
+            echo 'Build and deployment successful!'
         }
         failure {
-            echo 'Build or tests failed!'
+            echo 'Build failed!'
         }
     }
 }

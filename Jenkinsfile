@@ -1,10 +1,15 @@
 pipeline {
     agent any
 
+    tools {
+        jdk 'Java17'   
+    }
+
     stages {
 
         stage('Build') {
             steps {
+                sh 'java -version'          // optional debug
                 sh './gradlew clean build'
             }
         }

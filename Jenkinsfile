@@ -1,38 +1,46 @@
 pipeline {
-    agent any
+    agent any  // Use any available agent
 
     tools {
-        jdk 'Java17'   
+        maven 'Maven'  // Ensure this matches the name configured in Jenkins
     }
-
     stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'master', url: 'https://github.com/mithun2311/MyMavenGuavaApp.git'
+            }
+        }
 
         stage('Build') {
             steps {
-                sh 'java -version'          // optional debug
-                sh './gradlew clean build'
+                sh 'mvn clean package'  // Run Maven build
             }
         }
 
-        stage('Test (Selenium)') {
+        stage('Test') {
             steps {
-                sh './gradlew test'
+                sh 'mvn test'  // Run unit tests
             }
         }
 
-        stage('Report') {
+        
+        
+       
+        stage('Run Application') {
             steps {
-                junit '**/build/test-results/test/*.xml'
+                // Start the JAR application
+                sh 'mvn exec:java -Dexec.mainClass="com.example.App"'
             }
         }
+
+        
     }
 
     post {
         success {
-            echo 'Build & Selenium tests passed!'
+            echo 'Build and deployment successful!'
         }
         failure {
-            echo 'Build or tests failed!'
+            echo 'Build failed!'
         }
     }
-}

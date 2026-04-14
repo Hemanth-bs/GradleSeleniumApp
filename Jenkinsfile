@@ -4,13 +4,7 @@ pipeline {
     tools {
         maven 'Maven'  // Ensure this matches the name configured in Jenkins
     }
-    stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'master', url: 'https://github.com/Hemanth-bs/GradleSeleniumApp.git'
-            }
-        }
-
+  
         stage('Build') {
             steps {
                 sh 'mvn clean package'  // Run Maven build
